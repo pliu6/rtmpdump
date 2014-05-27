@@ -4,6 +4,7 @@
 AC_PREREQ([2.68])
 AC_INIT([rtmpdump], [2.4], [])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
+AM_PROG_AR
 LT_PREREQ([2.2])
 LT_INIT([dlopen])
 AC_CONFIG_MACRO_DIR([m4])
@@ -29,31 +30,31 @@ AC_MSG_NOTICE([Using $ac_cv_crypto as crypto])
 case "${ac_cv_crypto}" in
   openssl)
     AC_DEFINE(USE_OPENSSL, 1, [Use openssl])
-    AC_CHECK_LIB([ssl], [SSL_new])
-    AC_CHECK_LIB([crypto], [CRYPTO_add])
-    AC_CHECK_LIB([z], [gzopen])
+    AC_CHECK_LIB([ssl],[SSL_library_init], [], [AC_MSG_ERROR([OpenSSL libraries required])])
+    AC_CHECK_LIB([crypto],[CRYPTO_new_ex_data], [], [AC_MSG_ERROR([OpenSSL libraries required])])
+    AC_CHECK_LIB([z], [gzopen], [], [AC_MSG_ERROR([zlib required])])
     ;;
   gnutls)
     AC_DEFINE(USE_GNUTLS, 1, [Use gnutls])
-    AC_CHECK_LIB([gnutls], [gnutls_init], [], [], [hogweed nettle gmp])
-    AC_CHECK_LIB([z], [gzopen])
+    AC_CHECK_LIB([gnutls], [gnutls_init], [], [AC_MSG_ERROR([GnuTLS libraries required])])
+    AC_CHECK_LIB([nettle], [nettle_MD5Init], [], [AC_MSG_ERROR([nettle libraries required])], [-lhogweed])
+    AC_CHECK_LIB([gmp], [__gmpz_init], [], [AC_MSG_ERROR([gmp libraries required])])
+    AC_CHECK_LIB([z], [gzopen], [], [AC_MSG_ERROR([zlib required])])
     ;;
   polarssl)
     AC_DEFINE(USE_POLARSSL, 1, [Use polarssl])
-    AC_CHECK_LIB([polarssl], [havege_init])
-    AC_CHECK_LIB([z], [gzopen])
+    AC_CHECK_LIB([polarssl], [havege_init], [], [AC_MSG_ERROR([polarssl libraries required])])
+    AC_CHECK_LIB([z], [gzopen], [], [AC_MSG_ERROR([zlib required])])
     ;;
   none|*)
-    AC_WARNING([turn off all crypto support, you must specify one of --with-crypto={openssl, gnutls, polarssl} if you would like to build with crypto])
+    AC_MSG_WARN([turn off all crypto support, you must specify one of --with-crypto={openssl, gnutls, polarssl} if you would like to build with crypto])
     ;;
 esac
 
-# Configure options: --enable-ssl[=yes].
 AC_ARG_ENABLE([ssl],
-              AS_HELP_STRING([--enable-ssl],[enable ssl (default is yes)]),
-              [ac_cv_ssl="$withval"], [ac_cv_ssl=yes])
+              AS_HELP_STRING([--disable-ssl],[disable ssl]))
 
-AS_IF([test "x$ac_cv_ssl" = xno],
+AS_IF([test "x$enable_ssl" = "xno"],
       [AC_DEFINE([NO_SSL], [1], [Define to disable SSL])])
 
 # Checks for header files.
