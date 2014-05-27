@@ -1,5 +1,5 @@
 LDADD = ../librtmp/librtmp.la
-AM_CPPFLAGS = -I$(srcdir)/../librtmp -DRTMPDUMP_VERSION=\"$(VERSION)\" -DUSE_OPENSSL
+AM_CPPFLAGS = -I$(srcdir)/../librtmp -DRTMPDUMP_VERSION=\"$(VERSION)\"
 bin_PROGRAMS = rtmpdump rtmpgw rtmpsrv rtmpsuck
 rtmpdump_SOURCES = rtmpdump.c
 rtmpgw_SOURCES = rtmpgw.c thread.c thread.h
