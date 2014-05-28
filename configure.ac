@@ -23,7 +23,7 @@ AC_PROG_MAKE_SET
 AC_CHECK_LIB([pthread], [pthread_create], [], [AC_MSG_ERROR([pthread library required])])
 
 AC_ARG_WITH([crypto],
-            AS_HELP_STRING([--with-crypto],[Use crypto (openssl, gnutls, polarssl)]),
+            AS_HELP_STRING([--with-crypto],[Use crypto (openssl, gnutls, polarssl, none)]),
             [ac_cv_crypto="$withval"], [ac_cv_crypto="openssl"])
 
 AC_MSG_NOTICE([Using $ac_cv_crypto as crypto])
@@ -48,6 +48,7 @@ case "${ac_cv_crypto}" in
     ;;
   none|*)
     AC_MSG_WARN([turn off all crypto support, you must specify one of --with-crypto={openssl, gnutls, polarssl} if you would like to build with crypto])
+    AC_DEFINE(NO_CRYPTO, 1, [No crypto])
     ;;
 esac
 
