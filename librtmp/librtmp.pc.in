@@ -1,13 +1,12 @@
 prefix=@prefix@
-exec_prefix=${prefix}
+exec_prefix=@exec_prefix@
 libdir=@libdir@
-incdir=${prefix}/include
+incdir=@includedir@
 
 Name: librtmp
 Description: RTMP implementation
 Version: @VERSION@
-Requires: @CRYPTO_REQ@
+Requires: @RTMP_DEPENDENCIES@
 URL: http://rtmpdump.mplayerhq.hu
-Libs: -L${libdir} -lrtmp -lz @PUBLIC_LIBS@
-Libs.private: @PRIVATE_LIBS@
+Libs: -L${libdir} -lrtmp -lz
 Cflags: -I${incdir}
