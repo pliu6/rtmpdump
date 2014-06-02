@@ -33,7 +33,8 @@ case "${ac_cv_crypto}" in
     AC_CHECK_LIB([ssl],[SSL_library_init], [], [AC_MSG_ERROR([OpenSSL libraries required])])
     AC_CHECK_LIB([crypto],[CRYPTO_new_ex_data], [], [AC_MSG_ERROR([OpenSSL libraries required])])
     AC_CHECK_LIB([z], [gzopen], [], [AC_MSG_ERROR([zlib required])])
-    AC_SUBST(RTMP_DEPENDENCIES, ["libssl,libcrypto,libz"])
+    AC_SUBST(RTMP_DEPENDENCIES, ["libssl, libcrypto"])
+    AC_SUBST(RTMP_DEPENDENCIES_PRIVATE, ["zlib"])
     ;;
   gnutls)
     AC_DEFINE(USE_GNUTLS, 1, [Use gnutls])
@@ -41,13 +42,15 @@ case "${ac_cv_crypto}" in
     AC_CHECK_LIB([nettle], [nettle_MD5Init], [], [AC_MSG_ERROR([nettle libraries required])], [-lhogweed])
     AC_CHECK_LIB([gmp], [__gmpz_init], [], [AC_MSG_ERROR([gmp libraries required])])
     AC_CHECK_LIB([z], [gzopen], [], [AC_MSG_ERROR([zlib required])])
-    AC_SUBST(RTMP_DEPENDENCIES, ["libgnutls,libnettle,libgmp,libz"])
+    AC_SUBST(RTMP_DEPENDENCIES, ["gnutls"])
+    AC_SUBST(RTMP_DEPENDENCIES_PRIVATE, ["nettle, hogweed, zlib"])
     ;;
   polarssl)
     AC_DEFINE(USE_POLARSSL, 1, [Use polarssl])
     AC_CHECK_LIB([polarssl], [havege_init], [], [AC_MSG_ERROR([polarssl libraries required])])
     AC_CHECK_LIB([z], [gzopen], [], [AC_MSG_ERROR([zlib required])])
-    AC_SUBST(RTMP_DEPENDENCIES, ["libpolarssl,libz"])
+    AC_SUBST(RTMP_DEPENDENCIES, ["libpolarssl"])
+    AC_SUBST(RTMP_DEPENDENCIES_PRIVATE, ["zlib"])
     ;;
   none|*)
     AC_MSG_WARN([turn off all crypto support, you must specify one of --with-crypto={openssl, gnutls, polarssl} if you would like to build with crypto])

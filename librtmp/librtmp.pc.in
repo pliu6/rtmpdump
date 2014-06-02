@@ -7,6 +7,7 @@ Name: librtmp
 Description: RTMP implementation
 Version: @VERSION@
 Requires: @RTMP_DEPENDENCIES@
+Requires.private: @RTMP_DEPENDENCIES_PRIVATE@
 URL: http://rtmpdump.mplayerhq.hu
 Libs: -L${libdir} -lrtmp -lz
 Cflags: -I${incdir}
